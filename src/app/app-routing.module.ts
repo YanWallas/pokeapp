@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
-import { HomePage } from './pages/home/home.page';
-import { DetailsPage } from './pages/details/details.page';
-import { FavoritesPage } from './pages/favorites/favorites.page';
-
 const routes: Routes = [
   {
     path: '',
@@ -13,15 +9,15 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: HomePage
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: 'details',
-    component: DetailsPage
+    loadChildren: () => import('./pages/details/details.module').then( m => m.DetailsPageModule)
   },
   {
     path: 'favorites',
-    component: FavoritesPage
+    loadChildren: () => import('./pages/favorites/favorites.module').then( m => m.FavoritesPageModule)
   },
 ];
 
