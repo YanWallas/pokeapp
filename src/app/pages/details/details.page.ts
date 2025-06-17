@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [IonicModule, CommonModule, RouterModule]
 })
+
 export class DetailsPage implements OnInit {
   pokemon$!: Observable<Pokemon>;
   error: string | null = null;
@@ -50,5 +51,17 @@ export class DetailsPage implements OnInit {
     } else {
       this.favoritesService.addFavorite(pokemon);
     }
+  }
+
+  getStatName(statName: string): string {
+    const statTranslations: { [key: string]: string } = {
+      'hp': 'HP',
+      'attack': 'Ataque',
+      'defense': 'Defesa',
+      'special-attack': 'Ataque Especial',
+      'special-defense': 'Defesa Especial',
+      'speed': 'Velocidade'
+    };
+    return statTranslations[statName] || statName;
   }
 }

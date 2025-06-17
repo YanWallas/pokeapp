@@ -3,66 +3,73 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Pokémon Details</ion-title>
+    <ion-title>Detalhes do Pokémon</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" *ngIf="pokemon$ | async as pokemon">
-  <div class="ion-padding">
-    <div class="pokemon-header ion-text-center">
+  <div class="pokemon-card">
+    <div class="pokemon-header">
       <img [src]="pokemon.image" [alt]="pokemon.name" class="pokemon-image">
-      <h1 class="ion-text-capitalize">{{ pokemon.name }}</h1>
-      <div class="types">
-        <ion-chip *ngFor="let type of pokemon.types" [color]="type">
+      <h1 class="pokemon-name ion-text-capitalize">{{ pokemon.name }}</h1>
+      <div class="pokemon-types">
+        <ion-chip *ngFor="let type of pokemon.types" [color]="type" class="type-chip">
           {{ type }}
         </ion-chip>
       </div>
-      <ion-button (click)="toggleFavorite(pokemon)" [color]="isFavorite(pokemon.id) ? 'danger' : 'medium'">
+      <ion-button class="favorite-button" (click)="toggleFavorite(pokemon)"
+                  [color]="isFavorite(pokemon.id) ? 'danger' : 'medium'">
         <ion-icon [name]="isFavorite(pokemon.id) ? 'heart' : 'heart-outline'" slot="start"></ion-icon>
-        {{ isFavorite(pokemon.id) ? 'Remove from Favorites' : 'Add to Favorites' }}
+        {{ isFavorite(pokemon.id) ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos' }}
       </ion-button>
     </div>
 
-    <ion-list>
-      <ion-item>
-        <ion-label>
-          <h2>Height</h2>
-          <p>{{ pokemon.height! / 10 }} m</p>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <h2>Weight</h2>
-          <p>{{ pokemon.weight! / 10 }} kg</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
+    <div class="info-section">
+      <div class="info-card">
+        <h2 class="section-title">Características</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <ion-icon name="resize-outline"></ion-icon>
+            <label>Altura</label>
+            <p>{{ pokemon.height! / 10 }} m</p>
+          </div>
+          <div class="info-item">
+            <ion-icon name="scale-outline"></ion-icon>
+            <label>Peso</label>
+            <p>{{ pokemon.weight! / 10 }} kg</p>
+          </div>
+        </div>
+      </div>
 
-    <ion-list>
-      <ion-list-header>
-        <ion-label>Stats</ion-label>
-      </ion-list-header>
-      <ion-item *ngFor="let stat of pokemon.stats">
-        <ion-label>
-          <h2 class="ion-text-capitalize">{{ stat.name.replace('-', ' ') }}</h2>
-          <ion-progress-bar [value]="stat.value / 100" [color]="stat.value > 50 ? 'success' : 'warning'">
-          </ion-progress-bar>
-          <p class="stat-value">{{ stat.value }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
+      <div class="stats-card">
+        <h2 class="section-title">Estatísticas</h2>
+        <div class="stats-grid">
+          <div class="stat-item" *ngFor="let stat of pokemon.stats">
+            <label class="ion-text-capitalize">{{ getStatName(stat.name) }}</label>
+            <div class="stat-bar-container">
+              <div class="stat-bar"
+                   [style.width.%]="stat.value"
+                   [class.high-stat]="stat.value > 50"
+                   [class.low-stat]="stat.value <= 50">
+              </div>
+              <span class="stat-value">{{ stat.value }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </ion-content>
 
 <ion-content *ngIf="isLoading" class="ion-padding ion-text-center">
   <ion-spinner name="circular"></ion-spinner>
-  <p>Loading Pokemon details...</p>
+  <p>Carregando detalhes do Pokémon...</p>
 </ion-content>
 
 <ion-content *ngIf="error" class="ion-padding ion-text-center">
   <ion-icon name="alert-circle-outline" color="danger" size="large"></ion-icon>
   <p>{{ error }}</p>
   <ion-button routerLink="/home" fill="clear">
-    Go Back Home
+    Voltar para Home
   </ion-button>
 </ion-content>
