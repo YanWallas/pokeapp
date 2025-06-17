@@ -3,6 +3,11 @@
     <ion-title>
       Pokédex
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/favorites">
+        Favoritos
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -13,16 +18,36 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list>
-    <ion-item *ngFor="let pokemon of pokemons" [button]="true">
+  <ion-grid *ngIf="!isLoading && !error && pokemons.length > 0">
+    <ion-row>
+      <ion-col size="4" size-sm="3" size-md="2" *ngFor="let pokemon of pokemons">
+        <ion-card [button]="true" class="ion-text-center" [routerLink]="['/details', pokemon.id]">
+          <img [src]="pokemon.image" class="pokemon-sprite" />
+          <ion-card-header>
+            <ion-card-title class="ion-text-capitalize pokemon-name">
+              {{ pokemon.name }}
+            </ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-      <ion-avatar slot="start">
-        <img [src]="pokemon.image" />
-      </ion-avatar>
+  <div class="ion-padding ion-text-center" *ngIf="isLoading">
+    <ion-spinner name="circular"></ion-spinner>
+    <p>Carregando Pokémons...</p>
+  </div>
 
-      <ion-label class="ion-text-capitalize">
-        <h2>{{ pokemon.name }}</h2>
-      </ion-label>
-    </ion-item>
-  </ion-list>
-  </ion-content>
+  <div class="ion-padding ion-text-center" *ngIf="error">
+    <ion-icon name="alert-circle-outline" color="danger" size="large"></ion-icon>
+    <p>{{ error }}</p>
+    <ion-button (click)="loadPokemons()" fill="clear">
+      Tentar Novamente
+    </ion-button>
+  </div>
+
+  <div class="ion-padding ion-text-center" *ngIf="!isLoading && !error && pokemons.length === 0">
+    <ion-icon name="sad-outline" size="large"></ion-icon>
+    <p>Nenhum Pokémon encontrado</p>
+  </div>
+</ion-content>

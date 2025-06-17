@@ -1,0 +1,27 @@
+:host {
+  ion-card {
+    margin: 4px;
+
+    .pokemon-sprite {
+      width: 80px;
+      height: 80px;
+      margin: 8px auto 0;
+    }
+
+    ion-card-header {
+      padding: 8px;
+
+      .pokemon-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .ion-padding {
+    p {
+      margin-top: 8px;
+      font-size: 1rem;
+    }
+  }
+}
