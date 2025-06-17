@@ -16,27 +16,43 @@ export class HomePage implements OnInit {
   public pokemons: Pokemon[] = [];
   public isLoading = false;
   public error: string | null = null;
+  public currentPage = 1;
+  public totalPages = 1;
 
   constructor(private pokemonService: PokemonService) { }
 
   ngOnInit() {
-    this.loadPokemons();
+    this.loadPage(1);
   }
 
-  loadPokemons() {
+  loadPage(page: number) {
     this.isLoading = true;
     this.error = null;
 
-    this.pokemonService.getPokemons().subscribe({
-      next: (data) => {
-        this.pokemons = data;
+    this.pokemonService.getPage(page).subscribe({
+      next: (result) => {
+        this.pokemons = result.pokemons;
+        this.totalPages = result.totalPages;
+        this.currentPage = page;
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: string) => {
         this.error = error;
         this.isLoading = false;
         console.error('Error loading Pokémons:', error);
       }
     });
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.loadPage(this.currentPage + 1);
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.loadPage(this.currentPage - 1);
+    }
   }
 }

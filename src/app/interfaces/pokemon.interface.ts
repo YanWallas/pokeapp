@@ -19,9 +19,41 @@ export interface Pokemon {
   height?: number;
   weight?: number;
   stats?: PokemonStat[];
+  abilities?: PokemonAbility[];
+  moves?: PokemonMove[];
+  species?: PokemonSpecies;
+  sprites?: PokemonSprites;
+  baseExperience?: number;
 }
 
 export interface PokemonStat {
   name: string;
   value: number;
+}
+
+export interface PokemonAbility {
+  name: string;
+  isHidden: boolean;
+}
+
+export interface PokemonMove {
+  name: string;
+  learnMethod: string;
+  learnedAt: number;
+}
+
+export interface PokemonSpecies {
+  name: string;
+  description: string;
+  habitat: string;
+  generation: string;
+  growthRate: string;
+  captureRate: number;
+}
+
+export interface PokemonSprites {
+  front_default: string;
+  back_default: string;
+  front_shiny: string;
+  back_shiny: string;
 }

@@ -1,43 +1,82 @@
+.content-container {
+  padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+  transition: opacity 0.3s ease-in-out;
+}
+
+// Animação de fade-in
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+// Animação para cards
+ion-card {
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
 .pokemon-card {
   background: var(--ion-background-color);
   border-radius: 16px;
   padding: 20px;
-  margin: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
 }
 
 .pokemon-header {
   text-align: center;
-  margin-bottom: 24px;
 
   .pokemon-image {
     width: 200px;
     height: 200px;
-    margin: 0 auto 16px;
+    margin: 0 auto;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
   }
 
   .pokemon-name {
-    font-size: 2em;
+    font-size: 2.5em;
     font-weight: bold;
-    margin: 8px 0;
+    margin: 16px 0;
     color: var(--ion-color-dark);
+    text-transform: capitalize;
   }
+}
+
+.types-card {
+  margin-bottom: 16px;
 
   .pokemon-types {
     display: flex;
     justify-content: center;
-    gap: 8px;
-    margin: 12px 0;
+    gap: 12px;
+    margin-bottom: 16px;
 
     .type-chip {
       text-transform: capitalize;
       font-weight: 500;
+      font-size: 1.1em;
+      --padding-end: 16px;
+      --padding-start: 16px;
     }
   }
 
   .favorite-button {
-    margin-top: 16px;
+    margin: 0;
   }
 }
 
@@ -146,4 +185,128 @@ ion-spinner {
   width: 48px;
   height: 48px;
   margin: 24px auto;
+}
+
+// Additional styles for new sections
+.description {
+  font-size: 1em;
+  line-height: 1.5;
+  color: var(--ion-color-medium);
+  margin-bottom: 16px;
+}
+
+ion-list {
+  margin-bottom: 0;
+  background: transparent;
+}
+
+ion-item {
+  --background: transparent;
+
+  ion-icon {
+    color: var(--ion-color-primary);
+  }
+}
+
+ion-card {
+  margin: 0 0 16px 0;
+
+  ion-card-header {
+    padding-bottom: 8px;
+
+    ion-card-title {
+      font-size: 1.3em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      ion-icon {
+        font-size: 1.2em;
+        color: var(--ion-color-primary);
+      }
+    }
+  }
+}
+
+.description {
+  font-size: 1.1em;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: var(--ion-color-dark);
+  text-align: justify;
+}
+
+.sprite-container {
+  text-align: center;
+  padding: 12px;
+  background: var(--ion-color-light);
+  border-radius: 12px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 96px;
+    height: 96px;
+    image-rendering: pixelated;
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--ion-color-medium);
+    font-size: 0.9em;
+  }
+}
+
+// Navigation buttons
+.navigation-buttons {
+  ion-button {
+    margin: 8px 0;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+
+    &:first-child {
+      margin-bottom: 12px;
+    }
+
+    ion-icon {
+      font-size: 1.2em;
+      margin-right: 8px;
+    }
+  }
+}
+
+.hint-text {
+  color: var(--ion-color-medium);
+  font-size: 0.9em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 40px;
+    background: var(--ion-color-medium);
+    opacity: 0.3;
+  }
+}
+
+// Responsive adjustments
+@media (min-width: 768px) {
+  ion-content {
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+  }
+
+  ion-card {
+    margin: 16px auto;
+    max-width: 600px;
+  }
 }

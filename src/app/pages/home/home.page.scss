@@ -1,6 +1,49 @@
 :host {
+  .progress-indicator {
+    margin-top: 8px;
+    height: 4px;
+    border-radius: 2px;
+    --buffer-background: rgba(255, 255, 255, 0.2);
+    --progress-background: rgba(255, 255, 255, 0.8);
+  }
+
+  ion-title {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding-right: 0;
+  }
+
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+
+    .page-info {
+      color: var(--ion-color-medium);
+      font-size: 1.1em;
+      padding: 0 16px;
+      min-width: 150px;
+      text-align: center;
+    }
+
+    ion-button {
+      --padding-start: 16px;
+      --padding-end: 16px;
+      min-width: 120px;
+    }
+  }
+
   ion-card {
     margin: 4px;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
 
     .pokemon-sprite {
       width: 80px;
@@ -22,6 +65,19 @@
     p {
       margin-top: 8px;
       font-size: 1rem;
+    }
+  }
+}
+
+// Responsive adjustments for pagination
+@media (max-width: 480px) {
+  .pagination-controls {
+    flex-direction: column;
+    gap: 8px;
+
+    .page-info {
+      order: -1;
+      margin-bottom: 8px;
     }
   }
 }

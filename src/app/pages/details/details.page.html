@@ -3,46 +3,153 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Detalhes do Pokémon</ion-title>
+    <ion-title>Pokémon</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" *ngIf="pokemon$ | async as pokemon">
-  <div class="pokemon-card">
-    <div class="pokemon-header">
-      <img [src]="pokemon.image" [alt]="pokemon.name" class="pokemon-image">
-      <h1 class="pokemon-name ion-text-capitalize">{{ pokemon.name }}</h1>
-      <div class="pokemon-types">
-        <ion-chip *ngFor="let type of pokemon.types" [color]="type" class="type-chip">
-          {{ type }}
-        </ion-chip>
+<ion-content [fullscreen]="true" *ngIf="pokemon$ | async as pokemon" (keyup.arrowRight)="goToNextPokemon()" (keyup.arrowLeft)="goToPreviousPokemon()">
+  <div class="content-container">
+    <!-- Card Principal -->
+    <ion-card class="pokemon-card">
+      <div class="pokemon-header ion-text-center">
+        <img [src]="pokemon.image" [alt]="pokemon.name" class="pokemon-image">
+        <h1 class="pokemon-name ion-text-capitalize">{{ pokemon.name }}</h1>
       </div>
-      <ion-button class="favorite-button" (click)="toggleFavorite(pokemon)"
-                  [color]="isFavorite(pokemon.id) ? 'danger' : 'medium'">
-        <ion-icon [name]="isFavorite(pokemon.id) ? 'heart' : 'heart-outline'" slot="start"></ion-icon>
-        {{ isFavorite(pokemon.id) ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos' }}
-      </ion-button>
-    </div>
+    </ion-card>
 
-    <div class="info-section">
-      <div class="info-card">
-        <h2 class="section-title">Características</h2>
-        <div class="info-grid">
-          <div class="info-item">
-            <ion-icon name="resize-outline"></ion-icon>
-            <label>Altura</label>
-            <p>{{ pokemon.height! / 10 }} m</p>
-          </div>
-          <div class="info-item">
-            <ion-icon name="scale-outline"></ion-icon>
-            <label>Peso</label>
-            <p>{{ pokemon.weight! / 10 }} kg</p>
-          </div>
+    <!-- Card de Tipos e Favoritos -->
+    <ion-card class="types-card">
+      <ion-card-content class="ion-text-center">
+        <div class="pokemon-types">
+          <ion-chip *ngFor="let type of pokemon.types" [color]="type" class="type-chip">
+            {{ type }}
+          </ion-chip>
         </div>
-      </div>
+        <ion-button class="favorite-button" (click)="toggleFavorite(pokemon)"
+                    [color]="isFavorite(pokemon.id) ? 'danger' : 'medium'" expand="block">
+          <ion-icon [name]="isFavorite(pokemon.id) ? 'heart' : 'heart-outline'" slot="start"></ion-icon>
+          {{ isFavorite(pokemon.id) ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos' }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
 
-      <div class="stats-card">
-        <h2 class="section-title">Estatísticas</h2>
+    <!-- Card de Descrição -->
+    <ion-card *ngIf="pokemon.species" class="animate__animated animate__fadeIn">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="book-outline"></ion-icon>
+          Informações da Espécie
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p class="description">{{ pokemon.species.description }}</p>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="4">
+              <ion-item lines="none">
+                <ion-icon name="leaf-outline" slot="start"></ion-icon>
+                <ion-label>
+                  <h3>Habitat</h3>
+                  <p class="ion-text-capitalize">{{ pokemon.species.habitat }}</p>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="4">
+              <ion-item lines="none">
+                <ion-icon name="git-branch-outline" slot="start"></ion-icon>
+                <ion-label>
+                  <h3>Geração</h3>
+                  <p class="ion-text-capitalize">{{ pokemon.species.generation }}</p>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="4">
+              <ion-item lines="none">
+                <ion-icon name="trending-up-outline" slot="start"></ion-icon>
+                <ion-label>
+                  <h3>Taxa de Crescimento</h3>
+                  <p class="ion-text-capitalize">{{ pokemon.species.growthRate }}</p>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Card de Stats Rápidos -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="speedometer-outline"></ion-icon>
+          Visão Geral
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              <div class="info-item">
+                <ion-icon name="resize-outline"></ion-icon>
+                <label>Altura</label>
+                <p>{{ pokemon.height! / 10 }} m</p>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div class="info-item">
+                <ion-icon name="scale-outline"></ion-icon>
+                <label>Peso</label>
+                <p>{{ pokemon.weight! / 10 }} kg</p>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div class="info-item">
+                <ion-icon name="star-outline"></ion-icon>
+                <label>Exp. Base</label>
+                <p>{{ pokemon.baseExperience }}</p>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div class="info-item">
+                <ion-icon name="catch-outline"></ion-icon>
+                <label>Taxa de Captura</label>
+                <p>{{ pokemon.species?.captureRate }}%</p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Card de Habilidades -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="flash-outline"></ion-icon>
+          Habilidades
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let ability of pokemon.abilities">
+            <ion-label class="ion-text-capitalize">
+              {{ ability.name }}
+              <ion-badge color="medium" *ngIf="ability.isHidden">(Oculta)</ion-badge>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Card de Estatísticas -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="stats-chart-outline"></ion-icon>
+          Estatísticas
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
         <div class="stats-grid">
           <div class="stat-item" *ngFor="let stat of pokemon.stats">
             <label class="ion-text-capitalize">{{ getStatName(stat.name) }}</label>
@@ -56,8 +163,85 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Card de Movimentos -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="move-outline"></ion-icon>
+          Movimentos
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let move of pokemon.moves">
+            <ion-label class="ion-text-capitalize">
+              <h3>{{ move.name }}</h3>
+              <p>
+                Aprendido por: {{ getLearnMethod(move.learnMethod) }}
+                <ng-container *ngIf="move.learnedAt > 0">
+                  | No nível: {{ move.learnedAt }}
+                </ng-container>
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Card de Sprites -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="images-outline"></ion-icon>
+          Visualizações
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6" *ngIf="pokemon.sprites?.front_default">
+              <div class="sprite-container">
+                <img [src]="pokemon.sprites?.front_default" alt="Frente">
+                <p>Visão Frontal</p>
+              </div>
+            </ion-col>
+            <ion-col size="6" *ngIf="pokemon.sprites?.back_default">
+              <div class="sprite-container">
+                <img [src]="pokemon.sprites?.back_default" alt="Costas">
+                <p>Visão Traseira</p>
+              </div>
+            </ion-col>
+            <ion-col size="6" *ngIf="pokemon.sprites?.front_shiny">
+              <div class="sprite-container">
+                <img [src]="pokemon.sprites?.front_shiny" alt="Shiny Frente">
+                <p>Shiny Frontal</p>
+              </div>
+            </ion-col>
+            <ion-col size="6" *ngIf="pokemon.sprites?.back_shiny">
+              <div class="sprite-container">
+                <img [src]="pokemon.sprites?.back_shiny" alt="Shiny Costas">
+                <p>Shiny Traseira</p>
+              </div>
+            </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Botões de Navegação -->
+  <div class="ion-text-center ion-padding navigation-buttons">
+    <ion-button expand="block" fill="outline" (click)="goToNextPokemon()" [disabled]="currentId >= 1010">
+      <ion-icon name="arrow-forward-circle-outline" slot="start"></ion-icon>
+      {{ currentId >= 1010 ? 'Último Pokémon' : 'Ver Próximo Pokémon' }}
+    </ion-button>
+    <ion-button expand="block" fill="outline" (click)="goToPreviousPokemon()" [disabled]="pokemon.id === 1">
+      <ion-icon name="arrow-back-circle-outline" slot="start"></ion-icon>
+      Ver Pokémon Anterior
+    </ion-button>
+  </div>
   </div>
 </ion-content>
 
