@@ -15,23 +15,15 @@ export class PokemonService {
   readonly ITEMS_PER_PAGE = 30;
   readonly TOTAL_POKEMONS = 1010;
 
-  getPage(page: number): Observable<{
-    pokemons: Pokemon[],
-    totalPages: number
-  }> {
-    const offset = (page - 1) * this.ITEMS_PER_PAGE;
-    const limit = this.ITEMS_PER_PAGE;
-    const totalPages = Math.ceil(this.TOTAL_POKEMONS / this.ITEMS_PER_PAGE);
-
-    return this.http.get<PokemonResponse>(`${API_URL}/pokemon?offset=${offset}&limit=${limit}`).pipe(
-      map((response) => ({
-        pokemons: response.results.map((pokemon) => {
+  getAllPokemons(): Observable<Pokemon[]> {
+    return this.http.get<PokemonResponse>(`${API_URL}/pokemon?limit=${this.TOTAL_POKEMONS}`).pipe(
+      map((response) =>
+        response.results.map((pokemon) => {
           const id = Number(pokemon.url.split('/').filter(Boolean).pop());
           const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
           return { ...pokemon, id, image };
-        }),
-        totalPages
-      })),
+        })
+      ),
       catchError(this.handleError)
     );
   }
