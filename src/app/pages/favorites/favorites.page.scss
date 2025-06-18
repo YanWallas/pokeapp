@@ -38,15 +38,3 @@ ion-card {
     margin-bottom: 20px;
   }
 }
-
-// Responsive adjustments for pagination
-@media (max-width: 490px) {
-  ion-card-content {
-    padding: 8px;
-
-    ion-button {
-      margin: 3px 0;
-      font-size: 0.6rem;
-    }
-  }
-}

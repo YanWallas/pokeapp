@@ -36,10 +36,6 @@ export class PokemonService {
     );
   }
 
-  private offset = 0;
-  private limit = 50;
-
-
   private getSpecies(id: number): Observable<any> {
     return this.http.get<any>(`${API_URL}/pokemon-species/${id}`);
   }

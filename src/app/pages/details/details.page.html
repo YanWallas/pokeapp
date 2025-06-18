@@ -232,7 +232,7 @@
   </ion-card>
 
   <!-- Botões de Navegação -->
-  <div class="ion-text-center ion-padding navigation-buttons">
+  <div class="navigation-buttons">
     <ion-button expand="block" fill="outline" (click)="goToNextPokemon()" [disabled]="currentId >= 1010">
       <ion-icon name="arrow-forward-circle-outline" slot="start"></ion-icon>
       {{ currentId >= 1010 ? 'Último Pokémon' : 'Ver Próximo Pokémon' }}
